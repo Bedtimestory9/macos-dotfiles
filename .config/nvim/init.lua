@@ -113,13 +113,7 @@ vim.keymap.set("n", "<S-Tab>", "<<")
 vim.keymap.set("v", "<Tab>", ">>")
 vim.keymap.set("v", "<S-Tab>", "<<")
 vim.keymap.set("n", "<C-i>", "<C-i>") -- Distinguish <Tab> from <C-i> in normal mode
--- Glance keymaps
-vim.keymap.set("n", "gD", "<CMD>Glance definitions<CR>")
-vim.keymap.set("n", "gR", "<CMD>Glance references<CR>")
-vim.keymap.set("n", "gY", "<CMD>Glance type_definitions<CR>")
-vim.keymap.set("n", "gM", "<CMD>Glance implementations<CR>")
--- Keybinds to make split navigation easier.
---
+
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-S-h>", "<cmd>wincmd h<cr>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-S-l>", "<cmd>wincmd l<cr>", { desc = "Move focus to the right window" })
@@ -263,9 +257,9 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+			vim.keymap.set("n", "<leader>sg", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
+			vim.keymap.set("n", "<leader>ss", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+			vim.keymap.set("n", "<C-s>", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -388,7 +382,7 @@ require("lazy").setup({
 
 					-- -- WARN: This is not Goto Definition, this is Goto Declaration.
 					-- --  For example, in C this would take you to the header.
-					-- map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
@@ -829,10 +823,10 @@ require("lazy").setup({
 				harpoon:list():select(4)
 			end)
 			-- Toggle previous & next buffers stored within Harpoon list
-			vim.keymap.set("n", "<C-j>", function()
+			vim.keymap.set("n", "<C-k>", function()
 				harpoon:list():prev()
 			end)
-			vim.keymap.set("n", "<C-k>", function()
+			vim.keymap.set("n", "<C-j>", function()
 				harpoon:list():next()
 			end)
 		end,
@@ -929,17 +923,14 @@ require("lazy").setup({
 		enabled = vim.fn.has("nvim-0.10.0") == 1,
 	},
 	{
-		"dnlhc/glance.nvim",
-		cmd = "Glance",
-		config = function()
-			vim.keymap.set("n", "gD", "<CMD>Glance definitions<CR>")
-			vim.keymap.set("n", "gR", "<CMD>Glance references<CR>")
-			vim.keymap.set("n", "gY", "<CMD>Glance type_definitions<CR>")
-			vim.keymap.set("n", "gM", "<CMD>Glance implementations<CR>")
-		end,
+		"nvim-treesitter-context",
 	},
 	{
-		"nvim-treesitter-context",
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
 	},
 
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
