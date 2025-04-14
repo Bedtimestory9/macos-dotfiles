@@ -3,7 +3,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -119,7 +119,13 @@ vim.keymap.set("n", "<C-S-h>", "<cmd>wincmd h<cr>", { desc = "Move focus to the 
 vim.keymap.set("n", "<C-S-l>", "<cmd>wincmd l<cr>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<leader>j", "<cmd>wincmd j<cr>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<leader>k", "<cmd>wincmd k<cr>", { desc = "Move focus to the upper window" })
-
+--
+-- Glance
+--
+vim.keymap.set("n", "gD", "<CMD>Glance definitions<CR>")
+vim.keymap.set("n", "gR", "<CMD>Glance references<CR>")
+vim.keymap.set("n", "gY", "<CMD>Glance type_definitions<CR>")
+vim.keymap.set("n", "gM", "<CMD>Glance implementations<CR>")
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -261,7 +267,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>ss", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<C-s>", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
-			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
+			vim.keymap.set("n", "<leader>r", builtin.resume, { desc = "Search [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
@@ -382,7 +388,7 @@ require("lazy").setup({
 
 					-- -- WARN: This is not Goto Definition, this is Goto Declaration.
 					-- --  For example, in C this would take you to the header.
-					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+					-- map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
@@ -699,9 +705,8 @@ require("lazy").setup({
 			-- vim.cmd.colorscheme("sonokai")
 			-- vim.cmd.colorscheme("bamboo")
 			-- vim.cmd.colorscheme("tokyonight")
-			vim.cmd("colorscheme flexoki-dawn")
-			-- vim.cmd("colorscheme flexoki-moon")
 			-- vim.cmd("colorscheme flexoki-dawn")
+			vim.cmd("colorscheme flexoki-moon")
 			-- You can configure highlights by doing something like:
 			vim.cmd.hi("Comment gui=none")
 		end,
@@ -714,7 +719,6 @@ require("lazy").setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = { signs = false },
 	},
-
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
 		config = function()
@@ -732,21 +736,24 @@ require("lazy").setup({
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
+			require("mini.icons").setup()
+			require("mini.git").setup()
+			require("mini.indentscope").setup()
 
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,
 			--  and try some other statusline plugin
-			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
-
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-v/%L%2%"
-			end
+			-- local statusline = require("mini.statusline")
+			-- -- set use_icons to true if you have a Nerd Font
+			-- statusline.setup({ use_icons = true })
+			--
+			-- -- You can configure sections in the statusline by overriding their
+			-- -- default behavior. For example, here we set the section for
+			-- -- cursor location to LINE:COLUMN
+			-- ---@diagnostic disable-next-line: duplicate-set-field
+			-- statusline.section_location = function()
+			-- 	return "%2l:%-v/%L%2%"
+			-- end
 		end,
 	},
 	{ -- Highlight, edit, and navigate code
@@ -932,7 +939,80 @@ require("lazy").setup({
 		-- use opts = {} for passing setup options
 		-- this is equivalent to setup({}) function
 	},
-
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("lualine").setup({
+				options = {
+					icons_enabled = true,
+					theme = "auto",
+					component_separators = { left = "", right = "" },
+					section_separators = { left = "", right = "" },
+					disabled_filetypes = {
+						statusline = {},
+						winbar = {},
+					},
+					ignore_focus = {},
+					always_divide_middle = true,
+					always_show_tabline = true,
+					globalstatus = false,
+					refresh = {
+						statusline = 100,
+						tabline = 100,
+						winbar = 100,
+					},
+				},
+				sections = {
+					lualine_a = { "mode" },
+					lualine_b = {
+						{ "branch", max_length = vim.o.columns * 1 / 3 },
+						{ "diff" },
+						{ "diagnostics" },
+					},
+					lualine_c = {
+						{
+							"filename",
+							file_status = true, -- Displays file status (readonly status, modified status)
+							newfile_status = false, -- Display new file status (new file means no write after created)
+							path = 4, -- 0: Just the filename
+							-- 1: Relative path
+							-- 2: Absolute path
+							-- 3: Absolute path, with tilde as the home directory
+							-- 4: Filename and parent dir, with tilde as the home directory
+							shorting_target = 40, -- Shortens path to leave 40 spaces in the window
+							-- for other components. (terrible name, any suggestions?)
+							symbols = {
+								modified = "[+]", -- Text to show when the file is modified.
+								readonly = "[-]", -- Text to show when the file is non-modifiable or readonly.
+								unnamed = "[No Name]", -- Text to show for unnamed buffers.
+								newfile = "[New]", -- Text to show for newly created file before first write
+							},
+						},
+					},
+					lualine_x = { "filetype" },
+					lualine_y = { "progress" },
+					lualine_z = { "location" },
+				},
+				inactive_sections = {
+					lualine_a = {},
+					lualine_b = {},
+					lualine_c = { "filename" },
+					lualine_x = { "location" },
+					lualine_y = {},
+					lualine_z = {},
+				},
+				tabline = {},
+				winbar = {},
+				inactive_winbar = {},
+				extensions = {},
+			})
+		end,
+	},
+	{
+		"dnlhc/glance.nvim",
+		cmd = "Glance",
+	},
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
 	-- place them in the correct locations.
@@ -959,26 +1039,6 @@ require("lazy").setup({
 	-- Or use telescope!
 	-- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
 	-- you can continue same window with `<space>sr` which resumes last telescope search
-}, {
-	ui = {
-		-- If you are using a Nerd Font: set icons to an empty table which will use the
-		-- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-		icons = vim.g.have_nerd_font and {} or {
-			cmd = "⌘",
-			config = "🛠",
-			event = "📅",
-			ft = "📂",
-			init = "⚙",
-			keys = "🗝",
-			plugin = "🔌",
-			runtime = "💻",
-			require = "🌙",
-			source = "📄",
-			start = "🚀",
-			task = "📌",
-			lazy = "💤 ",
-		},
-	},
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`

@@ -48,7 +48,8 @@ startup_window: Dir
 windows:
   - API: cd ~/Dev/odss-sentry-api/ && npm run dev
   - UI: cd ~/Dev/odss-sentry-ui/ && npm run dev
-  - Dir: cd ~/Dev/
+  - UI-Edit: cd ~/Dev/odss-sentry-ui/ && v
+  - API-Edit: cd ~/Dev/odss-sentry-api/ && v
   - Home:
   - Extra:
   - v2ray: v2ray run --config=/Users/lawrencesu/Documents/config.json
