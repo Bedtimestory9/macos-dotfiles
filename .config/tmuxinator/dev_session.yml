@@ -2,7 +2,7 @@
 
 name: dev
 root: ~/
-startup_window: Dir
+startup_window: UI-Edit
 
 # Optional tmux socket
 # socket_name: foo
@@ -47,7 +47,7 @@ startup_window: Dir
 
 windows:
   - API: cd ~/Dev/odss-sentry-api/ && npm run dev
-  - UI: cd ~/Dev/odss-sentry-ui/ && npm run dev
+  - UI: cd ~/Dev/odss-sentry-ui/ && npm install && npm run dev
   - UI-Edit: cd ~/Dev/odss-sentry-ui/ && v
   - API-Edit: cd ~/Dev/odss-sentry-api/ && v
   - Home:

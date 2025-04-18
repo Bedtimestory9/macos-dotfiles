@@ -705,8 +705,8 @@ require("lazy").setup({
 			-- vim.cmd.colorscheme("sonokai")
 			-- vim.cmd.colorscheme("bamboo")
 			-- vim.cmd.colorscheme("tokyonight")
-			-- vim.cmd("colorscheme flexoki-dawn")
-			vim.cmd("colorscheme flexoki-moon")
+			vim.cmd("colorscheme flexoki-dawn")
+			-- vim.cmd("colorscheme flexoki-moon")
 			-- You can configure highlights by doing something like:
 			vim.cmd.hi("Comment gui=none")
 		end,
@@ -736,7 +736,7 @@ require("lazy").setup({
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
-			require("mini.icons").setup()
+			-- require("mini.icons").setup()
 			require("mini.git").setup()
 			require("mini.indentscope").setup()
 
@@ -966,7 +966,6 @@ require("lazy").setup({
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = {
-						{ "branch", max_length = vim.o.columns * 1 / 3 },
 						{ "diff" },
 						{ "diagnostics" },
 					},
@@ -1012,6 +1011,10 @@ require("lazy").setup({
 	{
 		"dnlhc/glance.nvim",
 		cmd = "Glance",
+	},
+	{
+		"sphamba/smear-cursor.nvim",
+		opts = {},
 	},
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
