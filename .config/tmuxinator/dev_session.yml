@@ -50,6 +50,7 @@ windows:
   - UI: cd ~/Dev/odss-sentry-ui/ && npm install && npm run dev
   - UI-Edit: cd ~/Dev/odss-sentry-ui/ && v
   - API-Edit: cd ~/Dev/odss-sentry-api/ && v
+  - Component-Edit: cd ~/Dev/odss-component-lib/ && v
   - Home:
   - Extra:
   - v2ray: v2ray run --config=/Users/lawrencesu/Documents/config.json
