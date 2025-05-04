@@ -73,6 +73,9 @@ vim.opt.smartindent = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
+-- Fixing border vanishing
+vim.o.winborder = "rounded"
+
 -- Fix SASS/SCSS
 vim.cmd("autocmd FileType scss setl iskeyword+=@")
 vim.cmd("autocmd FileType scss setl iskeyword+=$")
@@ -114,6 +117,8 @@ vim.keymap.set("v", "<Tab>", ">>")
 vim.keymap.set("v", "<S-Tab>", "<<")
 vim.keymap.set("n", "<C-i>", "<C-i>") -- Distinguish <Tab> from <C-i> in normal mode
 
+vim.keymap.set("n", "<C-W>", "<cmd>set wrap!<cr>", { desc = "[W]rap text" })
+
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-S-h>", "<cmd>wincmd h<cr>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-S-l>", "<cmd>wincmd l<cr>", { desc = "Move focus to the right window" })
@@ -126,6 +131,7 @@ vim.keymap.set("n", "gD", "<CMD>Glance definitions<CR>")
 vim.keymap.set("n", "gR", "<CMD>Glance references<CR>")
 vim.keymap.set("n", "gY", "<CMD>Glance type_definitions<CR>")
 vim.keymap.set("n", "gM", "<CMD>Glance implementations<CR>")
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -398,8 +404,8 @@ require("lazy").setup({
 					-- or a suggestion from your LSP for this to activate.
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
-					-- -- WARN: This is not Goto Definition, this is Goto Declaration.
-					-- --  For example, in C this would take you to the header.
+					-- WARN: This is not Goto Definition, this is Goto Declaration.
+					-- For example, in C this would take you to the header.
 					-- map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 					-- The following two autocommands are used to highlight references of the
@@ -445,14 +451,14 @@ require("lazy").setup({
 			})
 
 			-- Change diagnostic symbols in the sign column (gutter)
-			-- if vim.g.have_nerd_font then
-			--   local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
-			--   local diagnostic_signs = {}
-			--   for type, icon in pairs(signs) do
-			--     diagnostic_signs[vim.diagnostic.severity[type]] = icon
-			--   end
-			--   vim.diagnostic.config { signs = { text = diagnostic_signs } }
-			-- end
+			if vim.g.have_nerd_font then
+				local signs = { ERROR = "", WARN = "", INFO = "", HINT = "" }
+				local diagnostic_signs = {}
+				for type, icon in pairs(signs) do
+					diagnostic_signs[vim.diagnostic.severity[type]] = icon
+				end
+				vim.diagnostic.config({ signs = { text = diagnostic_signs }, virtual_text = true })
+			end
 
 			-- LSP servers and clients are able to communicate to each other what features they support.
 			--  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -860,11 +866,6 @@ require("lazy").setup({
 				"<leader>q",
 				"<cmd>Trouble diagnostics toggle<cr>",
 				desc = "Diagnostics (Trouble)",
-			},
-			{
-				"<leader>w",
-				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-				desc = "Buffer Diagnostics (Trouble)",
 			},
 			{
 				"<leader>cs",
