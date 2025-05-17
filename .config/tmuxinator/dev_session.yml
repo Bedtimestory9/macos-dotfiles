@@ -46,10 +46,9 @@ startup_window: UI-Edit
 # attach: false
 
 windows:
-  - API: cd ~/Dev/odss-sentry-api/ && npm run dev
-  - UI: cd ~/Dev/odss-sentry-ui/ && npm install && npm run dev
-  - UI-Edit: cd ~/Dev/odss-sentry-ui/ && v
-  - API-Edit: cd ~/Dev/odss-sentry-api/ && v
+  - API: cd ~/Dev/odss-pathfinder-api/ && npm run dev
+  - UI: cd ~/Dev/odss-pathfinder-ui/ && npm run dev
+  - UI-Edit: cd ~/Dev/odss-pathfinder-ui/ && v
   - Component-Edit: cd ~/Dev/odss-component-lib/ && v
   - Home:
   - Extra:

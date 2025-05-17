@@ -120,8 +120,8 @@ vim.keymap.set("n", "<C-i>", "<C-i>") -- Distinguish <Tab> from <C-i> in normal 
 vim.keymap.set("n", "<C-W>", "<cmd>set wrap!<cr>", { desc = "[W]rap text" })
 
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set("n", "<C-S-h>", "<cmd>wincmd h<cr>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-S-l>", "<cmd>wincmd l<cr>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<leader>h", "<cmd>wincmd h<cr>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<leader>l", "<cmd>wincmd l<cr>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<leader>j", "<cmd>wincmd j<cr>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<leader>k", "<cmd>wincmd k<cr>", { desc = "Move focus to the upper window" })
 --
@@ -985,7 +985,7 @@ require("lazy").setup({
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = {
-						{ "diff" },
+						{ "branch" },
 						{ "diagnostics" },
 					},
 					lualine_c = {
@@ -1001,9 +1001,9 @@ require("lazy").setup({
 							shorting_target = 40, -- Shortens path to leave 40 spaces in the window
 							-- for other components. (terrible name, any suggestions?)
 							symbols = {
-								modified = "[+]", -- Text to show when the file is modified.
-								readonly = "[-]", -- Text to show when the file is non-modifiable or readonly.
-								unnamed = "[No Name]", -- Text to show for unnamed buffers.
+								modified = "[M]", -- Text to show when the file is modified.
+								readonly = "[R]", -- Text to show when the file is non-modifiable or readonly.
+								unnamed = "[Unnamed]", -- Text to show for unnamed buffers.
 								newfile = "[New]", -- Text to show for newly created file before first write
 							},
 						},
