@@ -553,6 +553,36 @@ require("lazy").setup({
 				mode = "",
 				desc = "[F]ormat buffer",
 			},
+			{
+				"<leader>tf",
+				function()
+					-- If autoformat is currently disabled for this buffer,
+					-- then enable it, otherwise disable it
+					if vim.b.disable_autoformat then
+						vim.cmd("FormatEnable")
+						vim.notify("Enabled autoformat for current buffer")
+					else
+						vim.cmd("FormatDisable!")
+						vim.notify("Disabled autoformat for current buffer")
+					end
+				end,
+				desc = "Toggle autoformat for current buffer",
+			},
+			{
+				"<leader>tF",
+				function()
+					-- If autoformat is currently disabled globally,
+					-- then enable it globally, otherwise disable it globally
+					if vim.g.disable_autoformat then
+						vim.cmd("FormatEnable")
+						vim.notify("Enabled autoformat globally")
+					else
+						vim.cmd("FormatDisable")
+						vim.notify("Disabled autoformat globally")
+					end
+				end,
+				desc = "Toggle autoformat globally",
+			},
 		},
 		opts = {
 			notify_on_error = false,
@@ -582,7 +612,6 @@ require("lazy").setup({
 			},
 		},
 	},
-
 	{ -- Autocompletion
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
@@ -946,7 +975,7 @@ require("lazy").setup({
 		"nvim-treesitter-context",
 		config = function()
 			require("treesitter-context").setup({
-				max_lines = 3,
+				max_lines = 5,
 				trim_scope = "inner",
 			})
 		end,
@@ -1031,10 +1060,10 @@ require("lazy").setup({
 		"dnlhc/glance.nvim",
 		cmd = "Glance",
 	},
-	{
-		"sphamba/smear-cursor.nvim",
-		opts = {},
-	},
+	-- {
+	-- 	"sphamba/smear-cursor.nvim",
+	-- 	opts = {},
+	-- },
 	{
 		"sindrets/diffview.nvim",
 	},
