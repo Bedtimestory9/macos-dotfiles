@@ -1014,7 +1014,13 @@ require("lazy").setup({
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = {
-						{ "branch" },
+						{
+							"branch",
+							fmt = function(str)
+								local result = str.format("%-4s", string.sub(str, 1, 30))
+								return result
+							end,
+						},
 						{ "diagnostics" },
 					},
 					lualine_c = {
@@ -1032,7 +1038,7 @@ require("lazy").setup({
 							symbols = {
 								modified = "[M]", -- Text to show when the file is modified.
 								readonly = "[R]", -- Text to show when the file is non-modifiable or readonly.
-								unnamed = "[Unnamed]", -- Text to show for unnamed buffers.
+								unnamed = "[Empty]", -- Text to show for unnamed buffers.
 								newfile = "[New]", -- Text to show for newly created file before first write
 							},
 						},
